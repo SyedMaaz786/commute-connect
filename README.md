@@ -4,8 +4,8 @@ A mini carpool coordinator — post commute routes you're offering or looking fo
 what others have posted, and express interest in the ones that match. Built for the CommuteConnect
 take-home assignment (Frontend-Focused Full Stack Developer Intern).
 
-**Live app:** `PASTE_YOUR_VERCEL_URL_HERE`
-**Live API:** `PASTE_YOUR_RENDER_URL_HERE/api`
+**Live app:** https://commute-connect-gray.vercel.app
+**Live API:** https://commute-connect-sj1w.onrender.com/api
 **Time spent:** `~X hours over Y days` — fill in honestly before submitting.
 
 > The API is hosted on Render's free tier, which spins down after inactivity. The first request after
@@ -256,8 +256,3 @@ so "does this post exist" and "who owns it" only have one implementation.
 
 ---
 
-## A note on AI tooling
-
-Built with Claude Code as a pair-programming tool throughout, per the assignment's explicit allowance
-for AI-assisted development. Every decision above is something I can walk through and defend in a
-follow-up conversation, which is what the assignment says it's actually evaluating.

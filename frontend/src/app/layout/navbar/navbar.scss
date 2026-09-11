@@ -115,6 +115,7 @@
     top: 64px;
     left: 0;
     right: 0;
+    z-index: 101;
     background: var(--color-surface);
     border-bottom: 1px solid var(--color-border);
     flex-direction: column;
@@ -146,5 +147,30 @@
       margin-top: var(--space-3);
       justify-content: space-between;
     }
+  }
+}
+
+.navbar__backdrop {
+  display: none;
+
+  @media (max-width: 768px) {
+    display: block;
+    position: fixed;
+    inset: 64px 0 0 0;
+    z-index: 100;
+    background: rgba(17, 20, 28, 0.4);
+    border: none;
+    padding: 0;
+    cursor: default;
+    animation: backdrop-in 0.15s ease-out;
+  }
+}
+
+@keyframes backdrop-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
   }
 }

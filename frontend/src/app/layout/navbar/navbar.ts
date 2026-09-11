@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, effect, inject, signal } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { AuthService } from '../../core/services/auth.service';
 
@@ -14,6 +14,12 @@ export class Navbar {
 
   readonly currentUser = this.authService.currentUser;
   readonly menuOpen = signal(false);
+
+  constructor() {
+    effect(() => {
+      document.body.style.overflow = this.menuOpen() ? 'hidden' : '';
+    });
+  }
 
   toggleMenu(): void {
     this.menuOpen.update((value) => !value);

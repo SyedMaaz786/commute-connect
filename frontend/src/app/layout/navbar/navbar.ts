@@ -1,10 +1,11 @@
 import { Component, effect, inject, signal } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { AuthService } from '../../core/services/auth.service';
+import { BrandMark } from '../../shared/ui/brand-mark/brand-mark';
 
 @Component({
   selector: 'app-navbar',
-  imports: [RouterLink, RouterLinkActive],
+  imports: [RouterLink, RouterLinkActive, BrandMark],
   templateUrl: './navbar.html',
   styleUrl: './navbar.scss',
 })

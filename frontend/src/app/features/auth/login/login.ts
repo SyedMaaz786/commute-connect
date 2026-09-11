@@ -6,10 +6,11 @@ import { extractErrorMessage } from '../../../core/utils/extract-error-message';
 import { getValidationMessage } from '../../../shared/validators/validation-messages';
 import { FormField } from '../../../shared/ui/form-field/form-field';
 import { Button } from '../../../shared/ui/button/button';
+import { BrandMark } from '../../../shared/ui/brand-mark/brand-mark';
 
 @Component({
   selector: 'app-login',
-  imports: [ReactiveFormsModule, RouterLink, FormField, Button],
+  imports: [ReactiveFormsModule, RouterLink, FormField, Button, BrandMark],
   templateUrl: './login.html',
   styleUrl: '../auth.scss',
 })

@@ -7,10 +7,11 @@ import { getValidationMessage } from '../../../shared/validators/validation-mess
 import { passwordStrengthValidator, passwordsMatchValidator } from '../../../shared/validators/custom-validators';
 import { FormField } from '../../../shared/ui/form-field/form-field';
 import { Button } from '../../../shared/ui/button/button';
+import { BrandMark } from '../../../shared/ui/brand-mark/brand-mark';
 
 @Component({
   selector: 'app-register',
-  imports: [ReactiveFormsModule, RouterLink, FormField, Button],
+  imports: [ReactiveFormsModule, RouterLink, FormField, Button, BrandMark],
   templateUrl: './register.html',
   styleUrl: '../auth.scss',
 })

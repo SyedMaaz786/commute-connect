@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://REPLACE-WITH-YOUR-RENDER-URL.onrender.com/api',
+  apiUrl: 'https://commute-connect-sj1w.onrender.com/api',
 };

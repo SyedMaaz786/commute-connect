@@ -1,0 +1,10 @@
+<dialog #dialogEl class="confirm-dialog" (cancel)="onCancel()">
+  <h2 class="confirm-dialog__title">{{ title() }}</h2>
+  <p class="confirm-dialog__message">{{ message() }}</p>
+  <div class="confirm-dialog__actions">
+    <app-button variant="secondary" (click)="onCancel()">{{ cancelLabel() }}</app-button>
+    <app-button [variant]="danger() ? 'danger' : 'primary'" (click)="onConfirm()">
+      {{ confirmLabel() }}
+    </app-button>
+  </div>
+</dialog>

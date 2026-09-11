@@ -1,0 +1,27 @@
+<div class="page-container">
+  <div class="dashboard-header">
+    <h1>My posts</h1>
+    <a routerLink="/posts/new" class="dashboard-header__cta">+ New post</a>
+  </div>
+
+  @if (loading()) {
+    <app-spinner label="Loading your posts..."></app-spinner>
+  } @else if (error()) {
+    <app-error-state [message]="error()!" (retry)="retry()"></app-error-state>
+  } @else if (posts().length === 0) {
+    <app-empty-state
+      icon="🧳"
+      title="You haven't posted a commute yet"
+      message="Post a ride you're offering or looking for, and others can find it here."
+    >
+      <a routerLink="/posts/new" class="dashboard-header__cta">Post your first commute</a>
+    </app-empty-state>
+  } @else {
+    <div class="my-posts__grid">
+      @for (post of posts(); track post.id) {
+        <app-post-card [post]="post"></app-post-card>
+      }
+    </div>
+    <app-pagination [page]="page()" [totalPages]="totalPages()" (pageChange)="onPageChange($event)"></app-pagination>
+  }
+</div>

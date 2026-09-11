@@ -1,0 +1,43 @@
+<div class="auth-page">
+  <div class="auth-card">
+    <div class="auth-card__brand">
+      <span aria-hidden="true">🚗</span> CommuteConnect
+    </div>
+    <h1 class="auth-card__title">Welcome back</h1>
+    <p class="auth-card__subtitle">Log in to find your next carpool.</p>
+
+    @if (serverError()) {
+      <div class="auth-card__error" role="alert">{{ serverError() }}</div>
+    }
+
+    <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+      <app-form-field label="Email" for="login-email" [error]="fieldError('email')">
+        <input
+          id="login-email"
+          type="email"
+          class="field-control"
+          formControlName="email"
+          autocomplete="email"
+          placeholder="you@example.com"
+        />
+      </app-form-field>
+
+      <app-form-field label="Password" for="login-password" [error]="fieldError('password')">
+        <input
+          id="login-password"
+          type="password"
+          class="field-control"
+          formControlName="password"
+          autocomplete="current-password"
+          placeholder="••••••••"
+        />
+      </app-form-field>
+
+      <app-button type="submit" [fullWidth]="true" [loading]="submitting()">Log in</app-button>
+    </form>
+
+    <p class="auth-card__footer">
+      Don't have an account? <a routerLink="/register">Create one</a>
+    </p>
+  </div>
+</div>

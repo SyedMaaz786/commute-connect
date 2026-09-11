@@ -1,0 +1,45 @@
+<div class="page-container">
+  <h1 class="my-interests__title">My interests</h1>
+
+  @if (loading()) {
+    <app-spinner label="Loading your interests..."></app-spinner>
+  } @else if (error()) {
+    <app-error-state [message]="error()!" (retry)="retry()"></app-error-state>
+  } @else if (interests().length === 0) {
+    <app-empty-state
+      icon="💬"
+      title="You haven't expressed interest in anything yet"
+      message="Browse commute posts and let owners know you're interested."
+    >
+      <a routerLink="/posts" class="my-interests__browse-link">Browse commutes</a>
+    </app-empty-state>
+  } @else {
+    <div class="my-interests__list">
+      @for (interest of interests(); track interest.id) {
+        <app-card>
+          <div class="interest-item">
+            <div>
+              <app-badge [tone]="interest.post?.type === 'OFFERING' ? 'primary' : 'accent'">
+                {{ interest.post?.type === 'OFFERING' ? 'Offering a ride' : 'Looking for a ride' }}
+              </app-badge>
+              <a [routerLink]="['/posts', interest.postId]" class="interest-item__route">
+                {{ interest.post?.origin }} <span aria-hidden="true">→</span> {{ interest.post?.destination }}
+              </a>
+              <p class="interest-item__meta">{{ formatDate(interest.post?.departureAt) }}</p>
+              @if (interest.post?.owner) {
+                <p class="interest-item__owner">Posted by {{ interest.post?.owner?.name }}</p>
+              }
+            </div>
+            <app-button
+              variant="secondary"
+              [loading]="withdrawingId() === interest.id"
+              (click)="withdraw(interest)"
+            >
+              Withdraw
+            </app-button>
+          </div>
+        </app-card>
+      }
+    </div>
+  }
+</div>

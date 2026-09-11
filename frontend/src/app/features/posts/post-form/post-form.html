@@ -1,0 +1,72 @@
+<div class="page-container page-container--narrow">
+  <a routerLink="/posts" class="back-link">← Back to browse</a>
+  <h1 class="post-form__title">{{ isEditMode ? 'Edit commute post' : 'Post a commute' }}</h1>
+
+  @if (loading()) {
+    <app-spinner label="Loading..."></app-spinner>
+  } @else if (loadError()) {
+    <p class="post-form__load-error" role="alert">{{ loadError() }}</p>
+  } @else {
+    @if (serverError()) {
+      <div class="post-form__error" role="alert">{{ serverError() }}</div>
+    }
+
+    <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+      <app-form-field label="I am" for="post-type" [error]="fieldError('type')">
+        <select id="post-type" class="field-control" formControlName="type">
+          <option value="OFFERING">Offering a ride</option>
+          <option value="LOOKING">Looking for a ride</option>
+        </select>
+      </app-form-field>
+
+      <div class="post-form__row">
+        <app-form-field label="Origin" for="post-origin" [error]="fieldError('origin')">
+          <input id="post-origin" type="text" class="field-control" formControlName="origin" placeholder="Downtown" />
+        </app-form-field>
+
+        <app-form-field label="Destination" for="post-destination" [error]="fieldError('destination')">
+          <input
+            id="post-destination"
+            type="text"
+            class="field-control"
+            formControlName="destination"
+            placeholder="Airport"
+          />
+        </app-form-field>
+      </div>
+
+      <div class="post-form__row">
+        <app-form-field label="Departure date & time" for="post-departure" [error]="fieldError('departureAt')">
+          <input id="post-departure" type="datetime-local" class="field-control" formControlName="departureAt" />
+        </app-form-field>
+
+        <app-form-field label="Seats available" for="post-seats" [error]="fieldError('seatsAvailable')">
+          <input
+            id="post-seats"
+            type="number"
+            class="field-control"
+            formControlName="seatsAvailable"
+            min="1"
+            max="8"
+          />
+        </app-form-field>
+      </div>
+
+      <app-form-field
+        label="Notes (optional)"
+        for="post-notes"
+        hint="Meeting point, luggage space, anything riders should know."
+        [error]="fieldError('notes')"
+      >
+        <textarea id="post-notes" class="field-control" formControlName="notes" rows="4"></textarea>
+      </app-form-field>
+
+      <div class="post-form__actions">
+        <app-button type="submit" [loading]="submitting()">
+          {{ isEditMode ? 'Save changes' : 'Post commute' }}
+        </app-button>
+        <a routerLink="/posts" class="post-form__cancel">Cancel</a>
+      </div>
+    </form>
+  }
+</div>

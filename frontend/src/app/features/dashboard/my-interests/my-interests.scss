@@ -1,0 +1,49 @@
+.my-interests__title {
+  font-size: 1.6rem;
+  margin-bottom: var(--space-5);
+}
+
+.my-interests__list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.my-interests__browse-link {
+  color: var(--color-primary);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.interest-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+}
+
+.interest-item__route {
+  display: block;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--color-text);
+  text-decoration: none;
+  margin-top: var(--space-2);
+
+  &:hover {
+    color: var(--color-primary);
+  }
+}
+
+.interest-item__meta {
+  color: var(--color-text-muted);
+  font-size: 0.85rem;
+  margin-top: var(--space-1);
+}
+
+.interest-item__owner {
+  color: var(--color-text-faint);
+  font-size: 0.78rem;
+  margin-top: var(--space-1);
+}

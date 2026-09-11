@@ -1,0 +1,34 @@
+<form class="filter-bar" [formGroup]="form">
+  <div class="filter-bar__field">
+    <label for="filter-origin" class="visually-hidden">Filter by origin</label>
+    <input
+      id="filter-origin"
+      type="text"
+      class="field-control"
+      formControlName="origin"
+      placeholder="From..."
+    />
+  </div>
+
+  <div class="filter-bar__field">
+    <label for="filter-destination" class="visually-hidden">Filter by destination</label>
+    <input
+      id="filter-destination"
+      type="text"
+      class="field-control"
+      formControlName="destination"
+      placeholder="To..."
+    />
+  </div>
+
+  <div class="filter-bar__field filter-bar__field--select">
+    <label for="filter-type" class="visually-hidden">Filter by type</label>
+    <select id="filter-type" class="field-control" formControlName="type">
+      <option value="">All posts</option>
+      <option value="OFFERING">Offering a ride</option>
+      <option value="LOOKING">Looking for a ride</option>
+    </select>
+  </div>
+
+  <button type="button" class="filter-bar__clear" (click)="clear()">Clear</button>
+</form>

@@ -1,0 +1,118 @@
+.page-container--narrow {
+  max-width: 640px;
+}
+
+.back-link {
+  display: inline-block;
+  margin-bottom: var(--space-4);
+  color: var(--color-text-muted);
+  text-decoration: none;
+  font-size: 0.85rem;
+
+  &:hover {
+    color: var(--color-primary);
+  }
+}
+
+.post-detail__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-4);
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+
+.post-detail__owner-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.post-detail__edit-link {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-primary);
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.post-detail__route {
+  font-size: 1.5rem;
+  margin-bottom: var(--space-1);
+}
+
+.post-detail__departure {
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-5);
+}
+
+.post-detail__facts {
+  display: flex;
+  gap: var(--space-7);
+  margin: 0 0 var(--space-5);
+
+  dt {
+    font-size: 0.78rem;
+    color: var(--color-text-faint);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-bottom: 2px;
+  }
+
+  dd {
+    margin: 0;
+    font-weight: 600;
+  }
+}
+
+.post-detail__notes {
+  background: var(--color-bg);
+  border-radius: var(--radius-sm);
+  padding: var(--space-4);
+  margin-bottom: var(--space-5);
+
+  h2 {
+    font-size: 0.85rem;
+    margin-bottom: var(--space-2);
+    color: var(--color-text-muted);
+  }
+}
+
+.post-detail__interests {
+  margin-top: var(--space-6);
+  border-top: 1px solid var(--color-border);
+  padding-top: var(--space-5);
+
+  h2 {
+    font-size: 1rem;
+    margin-bottom: var(--space-3);
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  li {
+    font-size: 0.9rem;
+    padding: var(--space-2) 0;
+    border-bottom: 1px solid var(--color-border);
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+}
+
+.post-detail__no-interest {
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+}

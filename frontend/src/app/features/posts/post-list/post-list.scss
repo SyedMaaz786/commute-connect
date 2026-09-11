@@ -1,0 +1,18 @@
+.post-list__header {
+  margin-bottom: var(--space-5);
+}
+
+.post-list__header h1 {
+  font-size: 1.6rem;
+  margin-bottom: var(--space-1);
+}
+
+.post-list__subtitle {
+  color: var(--color-text-muted);
+}
+
+.post-list__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--space-4);
+}

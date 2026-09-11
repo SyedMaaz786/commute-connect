@@ -1,0 +1,30 @@
+.dashboard-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-5);
+
+  h1 {
+    font-size: 1.6rem;
+  }
+}
+
+.dashboard-header__cta {
+  background: var(--color-primary);
+  color: #fff;
+  text-decoration: none;
+  padding: 8px 16px;
+  border-radius: var(--radius-sm);
+  font-size: 0.85rem;
+  font-weight: 600;
+
+  &:hover {
+    background: var(--color-primary-dark);
+  }
+}
+
+.my-posts__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--space-4);
+}

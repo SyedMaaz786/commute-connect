@@ -1,0 +1,21 @@
+services:
+  - type: web
+    name: commuteconnect-api
+    runtime: docker
+    dockerfilePath: ./backend/Dockerfile
+    dockerContext: ./backend
+    plan: free
+    healthCheckPath: /api/health
+    envVars:
+      - key: DATABASE_URL
+        sync: false
+      - key: DB_SSL
+        value: 'true'
+      - key: JWT_SECRET
+        sync: false
+      - key: JWT_EXPIRES_IN
+        value: 1d
+      - key: PORT
+        value: '3000'
+      - key: CORS_ORIGIN
+        sync: false

@@ -1,0 +1,27 @@
+<div class="page-container">
+  <div class="post-list__header">
+    <h1>Browse commutes</h1>
+    <p class="post-list__subtitle">Find someone offering a ride, or post the one you're looking for.</p>
+  </div>
+
+  <app-filter-bar (filtersChange)="onFiltersChange($event)"></app-filter-bar>
+
+  @if (loading()) {
+    <app-spinner label="Loading posts..."></app-spinner>
+  } @else if (error()) {
+    <app-error-state [message]="error()!" (retry)="retry()"></app-error-state>
+  } @else if (posts().length === 0) {
+    <app-empty-state
+      icon="🔍"
+      title="No commutes match your search"
+      message="Try widening your filters, or be the first to post one."
+    ></app-empty-state>
+  } @else {
+    <div class="post-list__grid">
+      @for (post of posts(); track post.id) {
+        <app-post-card [post]="post"></app-post-card>
+      }
+    </div>
+    <app-pagination [page]="page()" [totalPages]="totalPages()" (pageChange)="onPageChange($event)"></app-pagination>
+  }
+</div>

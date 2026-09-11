@@ -1,0 +1,26 @@
+<app-card>
+  <a [routerLink]="['/posts', post().id]" class="post-card">
+    <div class="post-card__header">
+      <app-badge [tone]="post().type === 'OFFERING' ? 'primary' : 'accent'">
+        {{ post().type === 'OFFERING' ? 'Offering a ride' : 'Looking for a ride' }}
+      </app-badge>
+      <span class="post-card__seats">{{ post().seatsAvailable }} seat{{ post().seatsAvailable === 1 ? '' : 's' }}</span>
+    </div>
+
+    <div class="post-card__route">
+      <span class="post-card__place">{{ post().origin }}</span>
+      <span class="post-card__arrow" aria-hidden="true">→</span>
+      <span class="post-card__place">{{ post().destination }}</span>
+    </div>
+
+    <p class="post-card__meta">{{ departureLabel() }}</p>
+
+    @if (post().notes) {
+      <p class="post-card__notes">{{ post().notes }}</p>
+    }
+
+    @if (post().owner) {
+      <p class="post-card__owner">Posted by {{ post().owner?.name }}</p>
+    }
+  </a>
+</app-card>

@@ -1,0 +1,81 @@
+<div class="page-container page-container--narrow">
+  @if (loading()) {
+    <app-spinner label="Loading post..."></app-spinner>
+  } @else if (error()) {
+    <app-error-state [message]="error()!" (retry)="retry()"></app-error-state>
+  } @else if (post(); as post) {
+    <a routerLink="/posts" class="back-link">← Back to browse</a>
+
+    <app-card>
+      <div class="post-detail__header">
+        <app-badge [tone]="post.type === 'OFFERING' ? 'primary' : 'accent'">
+          {{ post.type === 'OFFERING' ? 'Offering a ride' : 'Looking for a ride' }}
+        </app-badge>
+
+        @if (isOwner()) {
+          <div class="post-detail__owner-actions">
+            <a [routerLink]="['/posts', post.id, 'edit']" class="post-detail__edit-link">Edit</a>
+            <app-button variant="danger" (click)="confirmDelete()">Delete</app-button>
+          </div>
+        }
+      </div>
+
+      <h1 class="post-detail__route">{{ post.origin }} <span aria-hidden="true">→</span> {{ post.destination }}</h1>
+      <p class="post-detail__departure">{{ departureLabel() }}</p>
+
+      <dl class="post-detail__facts">
+        <div>
+          <dt>Seats available</dt>
+          <dd>{{ post.seatsAvailable }}</dd>
+        </div>
+        @if (post.owner) {
+          <div>
+            <dt>Posted by</dt>
+            <dd>{{ post.owner.name }}</dd>
+          </div>
+        }
+      </dl>
+
+      @if (post.notes) {
+        <div class="post-detail__notes">
+          <h2>Notes</h2>
+          <p>{{ post.notes }}</p>
+        </div>
+      }
+
+      @if (!isOwner()) {
+        <app-button
+          [variant]="alreadyInterested() ? 'secondary' : 'primary'"
+          [loading]="actionPending()"
+          (click)="toggleInterest()"
+        >
+          {{ alreadyInterested() ? 'Withdraw interest' : "I'm interested" }}
+        </app-button>
+      }
+
+      @if (isOwner()) {
+        <div class="post-detail__interests">
+          <h2>Interested riders ({{ interestedUsers().length }})</h2>
+          @if (interestedUsers().length === 0) {
+            <p class="post-detail__no-interest">No one has expressed interest yet.</p>
+          } @else {
+            <ul>
+              @for (interest of interestedUsers(); track interest.id) {
+                <li>{{ interest.user?.name }} · {{ interest.user?.email }}</li>
+              }
+            </ul>
+          }
+        </div>
+      }
+    </app-card>
+  }
+</div>
+
+<app-confirm-dialog
+  [open]="deleteDialogOpen()"
+  title="Delete this post?"
+  message="This will permanently remove the post and everyone's expressed interest in it."
+  confirmLabel="Delete"
+  (confirmed)="deletePost()"
+  (cancelled)="cancelDelete()"
+></app-confirm-dialog>

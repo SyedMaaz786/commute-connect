@@ -1,0 +1,74 @@
+<div class="auth-page">
+  <div class="auth-card">
+    <div class="auth-card__brand">
+      <span aria-hidden="true">🚗</span> CommuteConnect
+    </div>
+    <h1 class="auth-card__title">Create your account</h1>
+    <p class="auth-card__subtitle">Start posting and matching commutes in minutes.</p>
+
+    @if (serverError()) {
+      <div class="auth-card__error" role="alert">{{ serverError() }}</div>
+    }
+
+    <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+      <app-form-field label="Full name" for="register-name" [error]="fieldError('name')">
+        <input
+          id="register-name"
+          type="text"
+          class="field-control"
+          formControlName="name"
+          autocomplete="name"
+          placeholder="Jane Doe"
+        />
+      </app-form-field>
+
+      <app-form-field label="Email" for="register-email" [error]="fieldError('email')">
+        <input
+          id="register-email"
+          type="email"
+          class="field-control"
+          formControlName="email"
+          autocomplete="email"
+          placeholder="you@example.com"
+        />
+      </app-form-field>
+
+      <app-form-field
+        label="Password"
+        for="register-password"
+        hint="At least 8 characters, with a letter and a number."
+        [error]="fieldError('password')"
+      >
+        <input
+          id="register-password"
+          type="password"
+          class="field-control"
+          formControlName="password"
+          autocomplete="new-password"
+          placeholder="••••••••"
+        />
+      </app-form-field>
+
+      <app-form-field
+        label="Confirm password"
+        for="register-confirm-password"
+        [error]="fieldError('confirmPassword')"
+      >
+        <input
+          id="register-confirm-password"
+          type="password"
+          class="field-control"
+          formControlName="confirmPassword"
+          autocomplete="new-password"
+          placeholder="••••••••"
+        />
+      </app-form-field>
+
+      <app-button type="submit" [fullWidth]="true" [loading]="submitting()">Create account</app-button>
+    </form>
+
+    <p class="auth-card__footer">
+      Already have an account? <a routerLink="/login">Log in</a>
+    </p>
+  </div>
+</div>

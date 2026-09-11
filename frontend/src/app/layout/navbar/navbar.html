@@ -1,0 +1,37 @@
+<header class="navbar">
+  <div class="navbar__inner">
+    <a routerLink="/posts" class="navbar__brand" (click)="closeMenu()">
+      <span class="navbar__brand-icon" aria-hidden="true">🚗</span>
+      CommuteConnect
+    </a>
+
+    <button
+      type="button"
+      class="navbar__toggle"
+      (click)="toggleMenu()"
+      [attr.aria-expanded]="menuOpen()"
+      aria-controls="primary-navigation"
+      aria-label="Toggle navigation menu"
+    >
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+
+    <nav id="primary-navigation" class="navbar__nav" [class.navbar__nav--open]="menuOpen()">
+      <a routerLink="/posts" routerLinkActive="is-active" [routerLinkActiveOptions]="{ exact: true }" (click)="closeMenu()">
+        Browse
+      </a>
+      <a routerLink="/dashboard/my-posts" routerLinkActive="is-active" (click)="closeMenu()">My Posts</a>
+      <a routerLink="/dashboard/my-interests" routerLinkActive="is-active" (click)="closeMenu()">
+        My Interests
+      </a>
+      <a routerLink="/posts/new" class="navbar__cta" (click)="closeMenu()">+ New Post</a>
+
+      <div class="navbar__user">
+        <span class="navbar__user-name">{{ currentUser()?.name }}</span>
+        <button type="button" class="navbar__logout" (click)="logout()">Log out</button>
+      </div>
+    </nav>
+  </div>
+</header>

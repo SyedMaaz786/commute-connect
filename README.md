@@ -8,6 +8,8 @@ take-home assignment (Frontend-Focused Full Stack Developer Intern).
 **Live API:** https://commuteconnect-api-v2.onrender.com/api
 **Time spent:** Approximately 12 hours over 3 days (4 hours each day).
 
+**Video walkthrough:** [Complete feature walkthrough](https://drive.google.com/file/d/1OD5pWwmKCUM-vFYsW_D8TjgiizMXACM5/view?usp=sharing) — a short walkthrough of the app and a technical decision I'm proud of.
+
 > The API is hosted on Render's free tier, which spins down after inactivity. The first request after
 > a while can take 30–60 seconds to wake up — that's the server cold-starting, not a bug.
 

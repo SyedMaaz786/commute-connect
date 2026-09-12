@@ -5,7 +5,7 @@ what others have posted, and express interest in the ones that match. Built for 
 take-home assignment (Frontend-Focused Full Stack Developer Intern).
 
 **Live app:** https://commute-connect-gray.vercel.app
-**Live API:** https://commute-connect-sj1w.onrender.com/api
+**Live API:** https://commuteconnect-api-v2.onrender.com/api
 **Time spent:** Approximately 12 hours over 3 days (4 hours each day).
 
 > The API is hosted on Render's free tier, which spins down after inactivity. The first request after

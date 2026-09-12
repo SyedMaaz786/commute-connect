@@ -1,7 +1,8 @@
 <div class="page-container">
   <div class="post-list__header">
+    <p class="page-eyebrow">FIND YOUR WAY TOGETHER</p>
     <h1>Browse commutes</h1>
-    <p class="post-list__subtitle">Find someone offering a ride, or post the one you're looking for.</p>
+    <p class="post-list__subtitle">A shared ride starts with a route in common. Find yours.</p>
   </div>
 
   <app-filter-bar (filtersChange)="onFiltersChange($event)"></app-filter-bar>
@@ -17,11 +18,19 @@
       message="Try widening your filters, or be the first to post one."
     ></app-empty-state>
   } @else {
+    <div class="post-list__results" role="status">
+      <span>{{ total() }} commute{{ total() === 1 ? '' : 's' }} found</span
+      ><span>Sorted by departure</span>
+    </div>
     <div class="post-list__grid">
       @for (post of posts(); track post.id) {
         <app-post-card [post]="post"></app-post-card>
       }
     </div>
-    <app-pagination [page]="page()" [totalPages]="totalPages()" (pageChange)="onPageChange($event)"></app-pagination>
+    <app-pagination
+      [page]="page()"
+      [totalPages]="totalPages()"
+      (pageChange)="onPageChange($event)"
+    ></app-pagination>
   }
 </div>

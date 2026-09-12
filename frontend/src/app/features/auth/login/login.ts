@@ -7,10 +7,11 @@ import { getValidationMessage } from '../../../shared/validators/validation-mess
 import { FormField } from '../../../shared/ui/form-field/form-field';
 import { Button } from '../../../shared/ui/button/button';
 import { BrandMark } from '../../../shared/ui/brand-mark/brand-mark';
+import { AuthIntro } from '../auth-intro';
 
 @Component({
   selector: 'app-login',
-  imports: [ReactiveFormsModule, RouterLink, FormField, Button, BrandMark],
+  imports: [ReactiveFormsModule, RouterLink, FormField, Button, BrandMark, AuthIntro],
   templateUrl: './login.html',
   styleUrl: '../auth.scss',
 })
@@ -19,7 +20,10 @@ export class Login {
   private readonly router = inject(Router);
 
   readonly form = new FormGroup({
-    email: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.email] }),
+    email: new FormControl('', {
+      nonNullable: true,
+      validators: [Validators.required, Validators.email],
+    }),
     password: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
   });
 

@@ -1,4 +1,8 @@
 .empty-state {
+  background: var(--color-surface);
+  border: 1px dashed var(--color-border);
+  border-radius: var(--radius-md);
+  margin-top: 24px;
   display: flex;
   flex-direction: column;
   align-items: center;

@@ -1,9 +1,11 @@
 .my-interests__title {
-  font-size: 1.6rem;
-  margin-bottom: var(--space-5);
+  font-size: 2rem;
+  letter-spacing: -0.8px;
+  margin-bottom: 4px;
 }
 
 .my-interests__list {
+  margin-top: 24px;
   display: flex;
   flex-direction: column;
   gap: var(--space-3);
@@ -24,6 +26,7 @@
 }
 
 .interest-item__route {
+  overflow-wrap: anywhere;
   display: block;
   font-size: 1.05rem;
   font-weight: 700;

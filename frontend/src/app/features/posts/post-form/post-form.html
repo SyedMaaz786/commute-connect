@@ -1,6 +1,13 @@
 <div class="page-container page-container--narrow">
   <a routerLink="/posts" class="back-link">← Back to browse</a>
   <h1 class="post-form__title">{{ isEditMode ? 'Edit commute post' : 'Post a commute' }}</h1>
+  <p class="page-lede">
+    {{
+      isEditMode
+        ? 'Keep your route and pickup details up to date.'
+        : 'Share your route and let people going your way find you.'
+    }}
+  </p>
 
   @if (loading()) {
     <app-spinner label="Loading..."></app-spinner>
@@ -21,10 +28,20 @@
 
       <div class="post-form__row">
         <app-form-field label="Origin" for="post-origin" [error]="fieldError('origin')">
-          <input id="post-origin" type="text" class="field-control" formControlName="origin" placeholder="Downtown" />
+          <input
+            id="post-origin"
+            type="text"
+            class="field-control"
+            formControlName="origin"
+            placeholder="Downtown"
+          />
         </app-form-field>
 
-        <app-form-field label="Destination" for="post-destination" [error]="fieldError('destination')">
+        <app-form-field
+          label="Destination"
+          for="post-destination"
+          [error]="fieldError('destination')"
+        >
           <input
             id="post-destination"
             type="text"
@@ -36,11 +53,24 @@
       </div>
 
       <div class="post-form__row">
-        <app-form-field label="Departure date & time" for="post-departure" [error]="fieldError('departureAt')">
-          <input id="post-departure" type="datetime-local" class="field-control" formControlName="departureAt" />
+        <app-form-field
+          label="Departure date & time"
+          for="post-departure"
+          [error]="fieldError('departureAt')"
+        >
+          <input
+            id="post-departure"
+            type="datetime-local"
+            class="field-control"
+            formControlName="departureAt"
+          />
         </app-form-field>
 
-        <app-form-field label="Seats available" for="post-seats" [error]="fieldError('seatsAvailable')">
+        <app-form-field
+          label="Seats available"
+          for="post-seats"
+          [error]="fieldError('seatsAvailable')"
+        >
           <input
             id="post-seats"
             type="number"

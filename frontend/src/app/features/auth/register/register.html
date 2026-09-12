@@ -1,8 +1,7 @@
 <div class="auth-page">
+  <app-auth-intro />
   <div class="auth-card">
-    <div class="auth-card__brand">
-      <app-brand-mark [size]="26"></app-brand-mark> CommuteConnect
-    </div>
+    <div class="auth-card__brand"><app-brand-mark [size]="26"></app-brand-mark> CommuteConnect</div>
     <h1 class="auth-card__title">Create your account</h1>
     <p class="auth-card__subtitle">Start posting and matching commutes in minutes.</p>
 
@@ -64,11 +63,11 @@
         />
       </app-form-field>
 
-      <app-button type="submit" [fullWidth]="true" [loading]="submitting()">Create account</app-button>
+      <app-button type="submit" [fullWidth]="true" [loading]="submitting()"
+        >Create account</app-button
+      >
     </form>
 
-    <p class="auth-card__footer">
-      Already have an account? <a routerLink="/login">Log in</a>
-    </p>
+    <p class="auth-card__footer">Already have an account? <a routerLink="/login">Log in</a></p>
   </div>
 </div>

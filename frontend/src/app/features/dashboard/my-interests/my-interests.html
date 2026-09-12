@@ -1,5 +1,7 @@
 <div class="page-container">
+  <p class="page-eyebrow">RIDES YOU'RE FOLLOWING</p>
   <h1 class="my-interests__title">My interests</h1>
+  <p class="page-lede">Keep track of the commutes you've connected with.</p>
 
   @if (loading()) {
     <app-spinner label="Loading your interests..."></app-spinner>
@@ -23,7 +25,8 @@
                 {{ interest.post?.type === 'OFFERING' ? 'Offering a ride' : 'Looking for a ride' }}
               </app-badge>
               <a [routerLink]="['/posts', interest.postId]" class="interest-item__route">
-                {{ interest.post?.origin }} <span aria-hidden="true">→</span> {{ interest.post?.destination }}
+                {{ interest.post?.origin }} <span aria-hidden="true">→</span>
+                {{ interest.post?.destination }}
               </a>
               <p class="interest-item__meta">{{ formatDate(interest.post?.departureAt) }}</p>
               @if (interest.post?.owner) {

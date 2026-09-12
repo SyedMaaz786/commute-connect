@@ -1,28 +1,28 @@
 <form class="filter-bar" [formGroup]="form">
   <div class="filter-bar__field">
-    <label for="filter-origin" class="visually-hidden">Filter by origin</label>
+    <label for="filter-origin">From</label>
     <input
       id="filter-origin"
       type="text"
       class="field-control"
       formControlName="origin"
-      placeholder="From..."
+      placeholder="Your starting point"
     />
   </div>
 
   <div class="filter-bar__field">
-    <label for="filter-destination" class="visually-hidden">Filter by destination</label>
+    <label for="filter-destination">To</label>
     <input
       id="filter-destination"
       type="text"
       class="field-control"
       formControlName="destination"
-      placeholder="To..."
+      placeholder="Where are you going?"
     />
   </div>
 
   <div class="filter-bar__field filter-bar__field--select">
-    <label for="filter-type" class="visually-hidden">Filter by type</label>
+    <label for="filter-type">Ride type</label>
     <select id="filter-type" class="field-control" formControlName="type">
       <option value="">All posts</option>
       <option value="OFFERING">Offering a ride</option>

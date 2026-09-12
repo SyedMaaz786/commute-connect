@@ -4,4 +4,12 @@
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-sm);
   padding: var(--space-5);
+  transition:
+    box-shadow 0.18s ease,
+    border-color 0.18s ease;
+}
+:host(:hover) .card,
+:host(:focus-within) .card {
+  border-color: #b2c0e7;
+  box-shadow: 0 8px 24px #1b355412;
 }

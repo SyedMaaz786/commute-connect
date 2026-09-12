@@ -20,6 +20,9 @@
     "test:cov": "vitest run --coverage",
     "test:debug": "vitest --inspect-brk --no-file-parallelism",
     "test:e2e": "dotenv -e .env.test -- vitest run --config ./vitest.config.e2e.ts",
+    "db:local": "node scripts/local-db.mjs",
+    "db:stop": "node scripts/local-db.mjs --stop",
+    "migration:test": "dotenv -e .env.test -- npm run migration:run",
     "migration:run": "npm run build && typeorm migration:run -d dist/database/data-source.js",
     "migration:revert": "npm run build && typeorm migration:revert -d dist/database/data-source.js"
   },

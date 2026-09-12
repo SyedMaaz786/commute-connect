@@ -3,10 +3,23 @@
   gap: var(--space-3);
   margin-bottom: var(--space-5);
   flex-wrap: wrap;
+  align-items: flex-end;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 20px;
+  box-shadow: 0 3px 12px #17243b04;
 }
 
 .filter-bar__field {
   flex: 1 1 180px;
+  min-width: 0;
+  label {
+    display: block;
+    font-size: 12px;
+    font-weight: 650;
+    margin-bottom: 7px;
+  }
 }
 
 .filter-bar__field--select {
@@ -14,6 +27,7 @@
 }
 
 .filter-bar__clear {
+  min-height: 44px;
   background: none;
   border: 1px solid var(--color-border);
   border-radius: var(--radius-sm);
@@ -32,6 +46,8 @@
 @media (max-width: 640px) {
   .filter-bar {
     flex-direction: column;
+    align-items: stretch;
+    padding: 16px;
   }
 
   .filter-bar__field,

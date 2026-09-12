@@ -1,4 +1,5 @@
 .btn {
+  min-height: 44px;
   position: relative;
   display: inline-flex;
   align-items: center;
@@ -10,7 +11,10 @@
   border-radius: var(--radius-sm);
   border: 1px solid transparent;
   cursor: pointer;
-  transition: background-color 0.15s ease, border-color 0.15s ease, transform 0.05s ease;
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease,
+    transform 0.05s ease;
 
   &:active:not(:disabled) {
     transform: translateY(1px);
@@ -23,6 +27,7 @@
 }
 
 .btn--primary {
+  box-shadow: 0 3px 7px #3454d11a;
   background: var(--color-primary);
   color: #fff;
 

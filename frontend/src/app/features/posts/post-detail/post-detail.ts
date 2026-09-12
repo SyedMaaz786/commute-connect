@@ -32,6 +32,8 @@ export class PostDetail {
   readonly interestedUsers = signal<Interest[]>([]);
   readonly loading = signal(true);
   readonly error = signal<string | null>(null);
+  readonly interestsLoading = signal(false);
+  readonly interestError = signal<string | null>(null);
   readonly alreadyInterested = signal(false);
   readonly actionPending = signal(false);
   readonly deleteDialogOpen = signal(false);
@@ -62,9 +64,21 @@ export class PostDetail {
     this.fetch();
   }
 
+  retryInterests(): void {
+    const post = this.post();
+    if (post && !this.interestsLoading()) this.loadSecondaryData(post);
+  }
+
   toggleInterest(): void {
     const post = this.post();
-    if (!post) return;
+    if (
+      !post ||
+      this.isOwner() ||
+      this.interestsLoading() ||
+      this.interestError() ||
+      this.actionPending()
+    )
+      return;
 
     this.actionPending.set(true);
 
@@ -97,7 +111,7 @@ export class PostDetail {
 
   deletePost(): void {
     const post = this.post();
-    if (!post) return;
+    if (!post || this.actionPending()) return;
 
     this.actionPending.set(true);
     this.postsService.remove(post.id).subscribe({
@@ -127,6 +141,7 @@ export class PostDetail {
     this.postsService.getOne(id).subscribe({
       next: (post) => {
         this.post.set(post);
+        this.loading.set(false);
         this.loadSecondaryData(post);
       },
       error: (error: unknown) => {
@@ -137,6 +152,8 @@ export class PostDetail {
   }
 
   private loadSecondaryData(post: CommutePost): void {
+    this.interestsLoading.set(true);
+    this.interestError.set(null);
     const currentUserId = this.authService.currentUser()?.id;
     const isOwner = currentUserId === post.ownerId;
 
@@ -144,9 +161,12 @@ export class PostDetail {
       this.interestsService.listForPost(post.id).subscribe({
         next: (interests) => {
           this.interestedUsers.set(interests);
-          this.loading.set(false);
+          this.interestsLoading.set(false);
         },
-        error: () => this.loading.set(false),
+        error: () => {
+          this.interestError.set('Could not load interested riders. Please try again.');
+          this.interestsLoading.set(false);
+        },
       });
       return;
     }
@@ -154,9 +174,12 @@ export class PostDetail {
     this.interestsService.listMine().subscribe({
       next: (interests) => {
         this.alreadyInterested.set(interests.some((interest) => interest.postId === post.id));
-        this.loading.set(false);
+        this.interestsLoading.set(false);
       },
-      error: () => this.loading.set(false),
+      error: () => {
+        this.interestError.set('Could not check your interest in this commute. Please try again.');
+        this.interestsLoading.set(false);
+      },
     });
   }
 }

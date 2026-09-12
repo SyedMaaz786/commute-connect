@@ -6,7 +6,7 @@ take-home assignment (Frontend-Focused Full Stack Developer Intern).
 
 **Live app:** https://commute-connect-gray.vercel.app
 **Live API:** https://commute-connect-sj1w.onrender.com/api
-**Time spent:** `~X hours over Y days` — fill in honestly before submitting.
+**Time spent:** Approximately 12 hours over 3 days (4 hours each day).
 
 > The API is hosted on Render's free tier, which spins down after inactivity. The first request after
 > a while can take 30–60 seconds to wake up — that's the server cold-starting, not a bug.
@@ -15,15 +15,15 @@ take-home assignment (Frontend-Focused Full Stack Developer Intern).
 
 ## Tech stack
 
-| Layer      | Choice                                                       |
-| ---------- | -------------------------------------------------------------|
-| Frontend   | Angular 22 (standalone components, Signals, no NgModules)    |
-| Backend    | NestJS 12 (ESM, modular)                                     |
-| Database   | PostgreSQL, accessed via TypeORM (migrations, no `synchronize`) |
-| Auth       | JWT (Passport strategy), bcrypt password hashing              |
-| Frontend host | Vercel                                                     |
-| Backend host  | Render (Docker)                                            |
-| DB host       | Neon (managed Postgres)                                    |
+| Layer         | Choice                                                          |
+| ------------- | --------------------------------------------------------------- |
+| Frontend      | Angular 22 (standalone components, Signals, no NgModules)       |
+| Backend       | NestJS 12 (ESM, modular)                                        |
+| Database      | PostgreSQL, accessed via TypeORM (migrations, no `synchronize`) |
+| Auth          | JWT (Passport strategy), bcrypt password hashing                |
+| Frontend host | Vercel                                                          |
+| Backend host  | Render (Docker)                                                 |
+| DB host       | Neon (managed Postgres)                                         |
 
 ---
 
@@ -64,6 +64,12 @@ If you don't have Postgres running anywhere yet, the quickest path is
 `docker compose up -d postgres` (from the repo root) — that gives you a Postgres instance on
 `localhost:5433` with credentials matching `backend/.env.example` out of the box.
 
+If PostgreSQL is already installed on your machine, you can instead run `npm run db:local`
+from `backend/`. This starts a separate workspace database on port 5433 using your local `.env`
+credentials, leaving an existing PostgreSQL service alone. Set `POSTGRES_BIN` if its executables
+are not on PATH (Windows installations under Program Files are detected automatically).
+Run `npm run db:stop` to stop this workspace database. Its local data is ignored by Git.
+
 **Frontend**
 
 ```bash
@@ -79,7 +85,7 @@ cd backend && npm test && npm run test:e2e   # unit + e2e (e2e needs .env.test �
 cd frontend && npm test                       # unit tests
 ```
 
-The backend e2e suite runs against a *separate* database so it never touches your dev data. Create it
+The backend e2e suite runs against a _separate_ database so it never touches your dev data. Create it
 once and point `backend/.env.test` at it:
 
 ```bash
@@ -89,20 +95,25 @@ DATABASE_URL=postgresql://<user>:<password>@localhost:5433/commuteconnect_test n
 
 (use whatever `POSTGRES_USER`/`POSTGRES_PASSWORD` you set in your local `.env`)
 
+For the installed-PostgreSQL helper, create `backend/.env.test` with the same local connection
+settings as `backend/.env` but a database name of `commuteconnect_test`. From `backend/`, run
+`npm run db:local`, then `npm run migration:test`, then `npm run test:e2e`. Tests refuse a database
+name that does not end in `_test` and clean up the users/posts they create. Unit tests need no database.
+
 ---
 
 ## Environment variables
 
 **`backend/.env`** (see `backend/.env.example`)
 
-| Variable          | Purpose                                                              |
-| ----------------- | --------------------------------------------------------------------|
-| `DATABASE_URL`     | Postgres connection string                                          |
-| `DB_SSL`           | `true` in production (Neon/most managed Postgres require SSL), `false` locally |
-| `JWT_SECRET`       | Signing secret for access tokens — generate one, don't reuse the example |
-| `JWT_EXPIRES_IN`   | Token lifetime, e.g. `1d`                                            |
-| `PORT`             | Port the API listens on                                              |
-| `CORS_ORIGIN`      | The deployed frontend's origin (so the browser is allowed to call the API) |
+| Variable         | Purpose                                                                        |
+| ---------------- | ------------------------------------------------------------------------------ |
+| `DATABASE_URL`   | Postgres connection string                                                     |
+| `DB_SSL`         | `true` in production (Neon/most managed Postgres require SSL), `false` locally |
+| `JWT_SECRET`     | Signing secret for access tokens — generate one, don't reuse the example       |
+| `JWT_EXPIRES_IN` | Token lifetime, e.g. `1d`                                                      |
+| `PORT`           | Port the API listens on                                                        |
+| `CORS_ORIGIN`    | The deployed frontend's origin (so the browser is allowed to call the API)     |
 
 Generate a real secret with:
 
@@ -112,9 +123,9 @@ node -e "console.log(require('crypto').randomBytes(48).toString('hex'))"
 
 **`frontend/src/environments/environment.prod.ts`**
 
-| Field      | Purpose                                              |
-| ---------- | ----------------------------------------------------- |
-| `apiUrl`   | The deployed backend's URL, with `/api` appended       |
+| Field    | Purpose                                          |
+| -------- | ------------------------------------------------ |
+| `apiUrl` | The deployed backend's URL, with `/api` appended |
 
 Angular bakes this in at build time via `fileReplacements` (see `angular.json`) — there's no runtime
 env var for a static SPA build, so this file has to be edited (and rebuilt/redeployed) whenever the
@@ -152,14 +163,16 @@ frontend/
 
 Each page component (`PostList`, `PostDetail`, `MyPosts`, …) owns its own `loading` / `error` / `data`
 signals and calls a thin, stateless `PostsService`/`InterestsService` (just `HttpClient` wrappers) to
-fetch. `AuthService` is the one genuinely shared piece of state — it holds `currentUser` as a signal
+fetch. Browse cancels an earlier request when filters or pagination change, so an old response cannot
+replace newer results. The detail page keeps failed interest lookups separate from a real empty list
+and lets the user retry. `AuthService` holds shared state — `currentUser` as a signal
 and exposes an `isAuthenticated` computed, which the navbar, guards, and interceptor all read.
 
 I considered NgRx and skipped it. This app has three resources and no state that's shared across more
 than a couple of unrelated components — NgRx's actions/reducers/effects ceremony would be pure
-overhead here, not clarity. Signals give the same "reactive, no manual subscribe/unsubscribe
-bookkeeping" benefit with a fraction of the boilerplate, and it's the direction Angular itself has been
-moving. If this app grew to have deeply nested state shared across many unrelated feature areas (real-
+overhead here, not clarity. Signals keep template state reactive with little boilerplate; HTTP request
+subscriptions still need their own cancellation and lifecycle handling. If this app grew to have
+deeply nested state shared across many unrelated feature areas (real-
 time updates, optimistic multi-entity caches, etc.), I'd revisit NgRx or a signal-store library at that
 point — not before.
 
@@ -177,8 +190,8 @@ so "does this post exist" and "who owns it" only have one implementation.
 - **A commute post has a `type`: `OFFERING` or `LOOKING`.** The spec says users post routes they're
   "offering or looking for" but doesn't define the data model — I made this an explicit enum column
   (a real Postgres enum, not just app-level validation) rather than inferring intent from other
-  fields, since it's the one thing every other feature (filtering, badges, "don't let someone express
-  interest in a LOOKING post as if it were a ride," etc.) hangs off of.
+  fields. The type drives filtering and badges. Users can express interest in either type of post:
+  joining an offered ride or connecting with someone looking for one.
 - **"Interested" is a row's existence, not a status field.** No `PENDING`/`ACCEPTED`/`DECLINED` — the
   spec only asks for expressing and withdrawing interest, not a full acceptance workflow. Adding
   status would be speculative scope beyond what's asked.
@@ -202,7 +215,7 @@ so "does this post exist" and "who owns it" only have one implementation.
 - **Search is case-insensitive substring match** (`ILIKE %term%`) on origin and destination
   independently, combinable with the type filter. No fuzzy/typo-tolerant matching or geocoding — a
   real "same commute corridor" matching engine is a project on its own, out of scope here.
-- **No custom UI component library.** Every input, button, card, spinner, empty/error state, toast,
+- **No external UI component library.** Every input, button, card, spinner, empty/error state, toast,
   and dialog is hand-built (`frontend/src/app/shared/ui`) rather than pulled from Angular Material or
   similar — slower to build, but it's the part of the assignment weighted highest (frontend polish),
   so I wanted it to be visibly my own design system rather than a default theme.
@@ -216,8 +229,9 @@ so "does this post exist" and "who owns it" only have one implementation.
 - Real-time updates (WebSocket or SSE) so a post owner sees a new interested rider without refreshing.
 - Geolocation- or corridor-based matching instead of exact substring search on origin/destination.
 - Soft deletes + an audit trail, instead of hard deletes cascading through posts and interests.
-- More e2e coverage (only one happy-path + one edge-case-heavy spec exists today; unit tests carry
-  most of the backend's coverage).
+- Broader browser automation for keyboard navigation and mobile layouts. Current coverage includes
+  20 frontend unit tests, 22 backend unit tests, and 3 API integration tests covering auth, matching,
+  ownership, editing, filtering, withdrawal, and deletion.
 
 ---
 
@@ -255,4 +269,3 @@ so "does this post exist" and "who owns it" only have one implementation.
 4. Once deployed, copy the Vercel URL back into Render's `CORS_ORIGIN` and redeploy the backend.
 
 ---
-

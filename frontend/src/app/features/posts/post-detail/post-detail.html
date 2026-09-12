@@ -20,7 +20,9 @@
         }
       </div>
 
-      <h1 class="post-detail__route">{{ post.origin }} <span aria-hidden="true">→</span> {{ post.destination }}</h1>
+      <h1 class="post-detail__route">
+        {{ post.origin }} <span aria-hidden="true">→</span> {{ post.destination }}
+      </h1>
       <p class="post-detail__departure">{{ departureLabel() }}</p>
 
       <dl class="post-detail__facts">
@@ -44,19 +46,40 @@
       }
 
       @if (!isOwner()) {
-        <app-button
-          [variant]="alreadyInterested() ? 'secondary' : 'primary'"
-          [loading]="actionPending()"
-          (click)="toggleInterest()"
-        >
-          {{ alreadyInterested() ? 'Withdraw interest' : "I'm interested" }}
-        </app-button>
+        @if (interestsLoading()) {
+          <app-spinner label="Checking your interest..."></app-spinner>
+        } @else if (interestError()) {
+          <app-error-state
+            [message]="interestError()!"
+            (retry)="retryInterests()"
+          ></app-error-state>
+        } @else {
+          <app-button
+            [variant]="alreadyInterested() ? 'secondary' : 'primary'"
+            [loading]="actionPending()"
+            (click)="toggleInterest()"
+          >
+            {{ alreadyInterested() ? 'Withdraw interest' : "I'm interested" }}
+          </app-button>
+        }
       }
 
       @if (isOwner()) {
         <div class="post-detail__interests">
-          <h2>Interested riders ({{ interestedUsers().length }})</h2>
-          @if (interestedUsers().length === 0) {
+          <h2>
+            Interested riders
+            @if (!interestsLoading() && !interestError()) {
+              ({{ interestedUsers().length }})
+            }
+          </h2>
+          @if (interestsLoading()) {
+            <app-spinner label="Loading interested riders..."></app-spinner>
+          } @else if (interestError()) {
+            <app-error-state
+              [message]="interestError()!"
+              (retry)="retryInterests()"
+            ></app-error-state>
+          } @else if (interestedUsers().length === 0) {
             <p class="post-detail__no-interest">No one has expressed interest yet.</p>
           } @else {
             <ul>
@@ -76,6 +99,7 @@
   title="Delete this post?"
   message="This will permanently remove the post and everyone's expressed interest in it."
   confirmLabel="Delete"
+  [busy]="actionPending()"
   (confirmed)="deletePost()"
   (cancelled)="cancelDelete()"
 ></app-confirm-dialog>

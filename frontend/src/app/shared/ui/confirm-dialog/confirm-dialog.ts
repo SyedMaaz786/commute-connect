@@ -14,6 +14,7 @@ export class ConfirmDialog {
   readonly confirmLabel = input('Confirm');
   readonly cancelLabel = input('Cancel');
   readonly danger = input(true);
+  readonly busy = input(false);
 
   readonly confirmed = output<void>();
   readonly cancelled = output<void>();
@@ -33,10 +34,12 @@ export class ConfirmDialog {
   }
 
   onCancel(): void {
+    if (this.busy()) return;
     this.cancelled.emit();
   }
 
   onConfirm(): void {
+    if (this.busy()) return;
     this.confirmed.emit();
   }
 }

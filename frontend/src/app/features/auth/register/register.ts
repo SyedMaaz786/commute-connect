@@ -4,14 +4,18 @@ import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
 import { extractErrorMessage } from '../../../core/utils/extract-error-message';
 import { getValidationMessage } from '../../../shared/validators/validation-messages';
-import { passwordStrengthValidator, passwordsMatchValidator } from '../../../shared/validators/custom-validators';
+import {
+  passwordStrengthValidator,
+  passwordsMatchValidator,
+} from '../../../shared/validators/custom-validators';
 import { FormField } from '../../../shared/ui/form-field/form-field';
 import { Button } from '../../../shared/ui/button/button';
 import { BrandMark } from '../../../shared/ui/brand-mark/brand-mark';
+import { AuthIntro } from '../auth-intro';
 
 @Component({
   selector: 'app-register',
-  imports: [ReactiveFormsModule, RouterLink, FormField, Button, BrandMark],
+  imports: [ReactiveFormsModule, RouterLink, FormField, Button, BrandMark, AuthIntro],
   templateUrl: './register.html',
   styleUrl: '../auth.scss',
 })
@@ -33,7 +37,10 @@ export class Register {
         nonNullable: true,
         validators: [Validators.required, Validators.minLength(8), passwordStrengthValidator()],
       }),
-      confirmPassword: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
+      confirmPassword: new FormControl('', {
+        nonNullable: true,
+        validators: [Validators.required],
+      }),
     },
     { validators: passwordsMatchValidator('password', 'confirmPassword') },
   );
@@ -68,7 +75,9 @@ export class Register {
       },
       error: (error: unknown) => {
         this.submitting.set(false);
-        this.serverError.set(extractErrorMessage(error, 'Could not create your account. Please try again.'));
+        this.serverError.set(
+          extractErrorMessage(error, 'Could not create your account. Please try again.'),
+        );
       },
     });
   }

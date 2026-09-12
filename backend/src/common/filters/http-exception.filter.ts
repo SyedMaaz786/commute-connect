@@ -23,10 +23,15 @@ export class AllExceptionsFilter implements ExceptionFilter {
       : HttpStatus.INTERNAL_SERVER_ERROR;
 
     const exceptionResponse = isHttpException ? exception.getResponse() : null;
-    const message = this.extractMessage(exceptionResponse, exception);
+    const message =
+      status >= HttpStatus.INTERNAL_SERVER_ERROR
+        ? 'Something went wrong. Please try again.'
+        : this.extractMessage(exceptionResponse);
 
-    if (!isHttpException) {
-      this.logger.error(exception instanceof Error ? exception.stack : exception);
+    if (status >= HttpStatus.INTERNAL_SERVER_ERROR) {
+      this.logger.error(
+        exception instanceof Error ? exception.stack : exception,
+      );
     }
 
     response.status(status).json({
@@ -37,7 +42,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
     });
   }
 
-  private extractMessage(exceptionResponse: unknown, exception: unknown): string | string[] {
+  private extractMessage(exceptionResponse: unknown): string | string[] {
     if (typeof exceptionResponse === 'string') {
       return exceptionResponse;
     }
@@ -47,9 +52,6 @@ export class AllExceptionsFilter implements ExceptionFilter {
       'message' in exceptionResponse
     ) {
       return (exceptionResponse as { message: string | string[] }).message;
-    }
-    if (exception instanceof Error) {
-      return exception.message;
     }
     return 'Something went wrong';
   }

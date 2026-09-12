@@ -1,4 +1,6 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, DestroyRef, inject, signal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import type { Subscription } from 'rxjs';
 import { PostsService } from '../../../core/services/posts.service';
 import { extractErrorMessage } from '../../../core/utils/extract-error-message';
 import type { CommutePost, PostType } from '../../../core/models/post.model';
@@ -19,12 +21,15 @@ const PAGE_SIZE = 9;
 })
 export class PostList {
   private readonly postsService = inject(PostsService);
+  private readonly destroyRef = inject(DestroyRef);
+  private request?: Subscription;
 
   readonly posts = signal<CommutePost[]>([]);
   readonly loading = signal(true);
   readonly error = signal<string | null>(null);
   readonly page = signal(1);
   readonly totalPages = signal(1);
+  readonly total = signal(0);
 
   private filters: { origin?: string; destination?: string; type?: PostType } = {};
 
@@ -48,15 +53,18 @@ export class PostList {
   }
 
   private fetch(): void {
+    this.request?.unsubscribe();
     this.loading.set(true);
     this.error.set(null);
 
-    this.postsService
+    this.request = this.postsService
       .list({ page: this.page(), limit: PAGE_SIZE, ...this.filters })
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: (result) => {
           this.posts.set(result.data);
           this.totalPages.set(result.totalPages);
+          this.total.set(result.total);
           this.loading.set(false);
         },
         error: (error: unknown) => {

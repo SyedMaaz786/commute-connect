@@ -1,6 +1,10 @@
 <div class="page-container">
   <div class="dashboard-header">
-    <h1>My posts</h1>
+    <div>
+      <p class="page-eyebrow">YOUR COMMUTES</p>
+      <h1>My posts</h1>
+      <p class="page-lede">Routes you've shared, all in one place.</p>
+    </div>
     <a routerLink="/posts/new" class="dashboard-header__cta">+ New post</a>
   </div>
 
@@ -22,6 +26,10 @@
         <app-post-card [post]="post"></app-post-card>
       }
     </div>
-    <app-pagination [page]="page()" [totalPages]="totalPages()" (pageChange)="onPageChange($event)"></app-pagination>
+    <app-pagination
+      [page]="page()"
+      [totalPages]="totalPages()"
+      (pageChange)="onPageChange($event)"
+    ></app-pagination>
   }
 </div>

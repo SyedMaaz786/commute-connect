@@ -17,5 +17,10 @@ Thumbs.db
 
 .angular/
 *.tsbuildinfo
+.local/
 
 docs/video-script.md
+docs/video-narration.md
+docs/video-captions.srt
+docs/verification.md
+docs/*.mp4
